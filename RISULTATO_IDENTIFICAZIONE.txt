@@ -1,0 +1,6 @@
+EQUAZIONE IDENTIFICATA
+ termine  bestak  var p  binsize  var
+
+y(t-1) 	 0.9962493(+-)0.0040395	   0.0060639	 0.0000040	 
+
+y(t)=0.99625*y(t-1)+
