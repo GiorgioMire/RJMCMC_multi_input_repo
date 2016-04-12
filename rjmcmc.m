@@ -4,8 +4,18 @@
 % clc
 
 function rjmcmc(y,u)
-addpath('RJMCMC_functions\')
-global mc 
+addpath('D:\Underwater\RJMCMC_multi_input\RJMCMC_functions')
+global mc SFP
+
+for j=1:length(u)
+    units(j)=max(abs(u{j}));
+ u{j}=u{j}./units(j);
+    
+end
+    unitsy=max(abs(y));
+  y=y./unitsy;
+
+
 close all
 clc
 Settings=Settings_by_GUI();
@@ -35,11 +45,12 @@ mc.lambdaB=2;
 mc.sigmaA=Settings.sigmaP;
 mc.sigmaB=Settings.sigmaN;
 mc.sigmaE=Settings.sigmaEP;
+mc.sigmaE=mc.sigmaE/unitsy;
 
 % Inizializzo gli insiemi dei termini disponibili 
 
 [Sets]=Inizializza_insiemi();
-
+computeScaleFactors;
 mc.eestim=zeros(size(y));
 
 [Series]=Prepare_series();
@@ -62,8 +73,14 @@ end
 % Salvo ogni tanto i risultati parziali
 if mod(it,Settings.periodo_salvataggi)==0 || it==1
     display('Saving data...')
+    try
     save(Settings.savename,'mc','Series','Sets','Settings','it')
     display('Done!')
+    catch
+        mkdir('.\Savings\')
+         save(Settings.savename,'mc','Series','Sets','Settings','it')
+    display('Done!')
+    end
 end
 
 % Da qui stimo la durata dell'iterazione
@@ -79,21 +96,14 @@ Shift_segnali_e_matrici(y,u,Settings,Sets)
 % Estraggo un nuovo valor medio del numero di termini di processo
 % dalla distribuzione a posteriori di k
  simulateLa(Settings);
+%  if it>2
+%      % Scelgo ed effettuo la mossa di transizione della catena di Markov per il
+% % processo
+%  Effettua_mossa_rumore(y,u,Settings,Sets)
+%   simulateLb(Settings);
+%  end
  
 
-if it>2
-    
-% Scelgo ed effettuo la mossa di transizione della catena di Markov per il
-% rumore 
-
-%  Effettua_mossa_rumore(y,u,Settings,Sets)
-
-% Estraggo un nuovo valor medio del numero di termini di rumore
-% dalla distribuzione a posteriori di q
-
-% simulateLb;
-
-end
 
 % Calcolo del nuovo residuo
 [residual]=calculateResidual(y);
@@ -103,7 +113,7 @@ if Settings.plot_residual &&  it> Settings.burnin
 plots
 end
 % Aggiorno la matrice di regressione del rumore con il nuovo residuo
-updateEq(y,u,Sets);
+% updateEq(y,u,Sets);
 
 
 if it>=Settings.burnin

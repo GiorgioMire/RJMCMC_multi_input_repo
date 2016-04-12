@@ -36,7 +36,8 @@ else
  for i=1:Settings.repeat
      % Aggiorno la varianza dei termini di processo
  SigmaB_update(Settings)
- % Aggiorno i coefficienti del processo Process_update;
+ % Aggiorno i coefficienti del processo
+ Noise_update(y);
  end
    
 end

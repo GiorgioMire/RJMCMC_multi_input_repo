@@ -17,15 +17,15 @@ for m=1:q
 %      display('diff')
   %  ahat(m)-ak(m)
     %PosteriorNew
-    b=bq;
+    b=mc.bq;
     b(m)=bhat;
     % PosteriorNew
   epsilon=ycut-ezp(Eq,b,ycut)-ezp(Pk,ak,ycut);
-  epsilonOld=ycut-ezp(Eq,bq,ycut)-ezp(Pk,ak,ycut);
-  posteriorNew=prod(exp((-epsilon.^2+epsilonOld.^2)/2/SE^2))*mvnpdf(b,zeros(q,1),SB^2*eye(q));
+  epsilonOld=ycut-ezp(Eq,mc.bq,ycut)-ezp(Pk,ak,ycut);
+  posteriorNew=exp(sum((-epsilon.^2+epsilonOld.^2)/2/SE^2)+sum(-b.^2+mc.bq.^2)/2/SB^2);
 %PosteriorOld
 
-posterior=mvnpdf(bq,zeros(q,1),SB^2*eye(q));
+posterior=1;
 
 %La proposal secondo me non va compensata a causa della simmetria
 %della gaussiana attorno al valor medio

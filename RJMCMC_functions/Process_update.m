@@ -10,7 +10,6 @@ k=mc.k;
 ak=mc.ak;
 ycut=y(mc.t_base:mc.t_end);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-akold=ak;
 invC=SE^(-2)*(Pk.')*Pk+SA^(-2)*eye(k);%;
 C=inv(invC);
 for m=1:k
@@ -18,15 +17,15 @@ for m=1:k
 %      display('diff')
   %  ahat(m)-ak(m)
     %PosteriorNew
-    a=ak;
+    a=mc.ak;
     a(m)=ahat;
     % PosteriorNew
   epsilon=ycut-ezp(Pk,a,ycut)-ezp(Eq,bq,ycut);
-  epsilonOld=ycut-ezp(Pk,ak,ycut)-ezp(Eq,bq,ycut);
-  posteriorNew=prod(-exp(epsilon.^2/2/(SE^2)+epsilonOld.^2/2/(SE^2)))*mvnpdf(a,zeros(k,1),SA^2*eye(k));
+  epsilonOld=ycut-ezp(Pk,mc.ak,ycut)-ezp(Eq,bq,ycut);
+  posteriorNew=exp(sum((-epsilon.^2+epsilonOld.^2)/2/SE^2)+sum(-a.^2+mc.ak.^2)/2/SA^2);
 %PosteriorOld
 
-posterior=mvnpdf(ak,zeros(k,1),SA^2*eye(k));
+posterior=1;
 
 %La proposal secondo me non va compensata a causa della simmetria
 %della gaussiana attorno al valor medio
@@ -34,7 +33,7 @@ posterior=mvnpdf(ak,zeros(k,1),SA^2*eye(k));
 rate=(posteriorNew/posterior);
 
 if (~isfinite(posterior) && ~isfinite(posteriorNew)) || isnan(rate)
-    warning('not finite posterior or nan rate')
+     warning('not finite posterior or nan rate')
     rate=1;
 end
 alpha=min(1,rate);

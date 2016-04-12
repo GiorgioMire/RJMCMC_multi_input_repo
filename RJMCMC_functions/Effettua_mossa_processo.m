@@ -21,7 +21,9 @@ if k>0
 num=(lambdaA^(k-1))/factorial(k-1);
 den=(lambdaA^(k))/factorial(k);
 D=c*min(1,(num/den)^1);
+
 end
+
 
 % Estraggo la  mossa e la effetttuo
 
@@ -36,7 +38,8 @@ else
  for i=1:Settings.repeat
      % Aggiorno la varianza dei termini di processo
  SigmaA_update(Settings)
- % Aggiorno i coefficienti del processo Process_update;
+ % Aggiorno i coefficienti del processo 
+  Process_update(y);
  end
    
 end

@@ -10,9 +10,10 @@ New.k=mc.k+1;
 
 % Calcolo il rapporto di accettazione della mossa
 [ra,New.ak]=Compute_RA(y,mc,New);
+
 gamma=min(1,ra);
 z=rand();
-% Decido se accettare o meno la modda
+% Decido se accettare o meno la mossa
 if z<gamma
     % Mossa accettata
   %display('accettata')

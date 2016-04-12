@@ -1,5 +1,5 @@
 function [series]=coding(series,Settings)
-global mc 
+global mc SFP
 % Riordino i vettori dei modelli in modo da evitare di considerare diversi
 % due modelli che differiscono solo per l'ordine dei termini
 
@@ -33,7 +33,7 @@ end
 
 % Aggiunge il vettore attuale dei parametri alla storia temporale
 % associata al modello attuale
-series.Ak{series.codesP(id_process)}=[series.Ak{series.codesP(id_process)},mc.ak(idx)];
+series.Ak{series.codesP(id_process)}=[series.Ak{series.codesP(id_process)},mc.ak(idx).*(SFP(Process_choosen_c).')];
 
 % Stesse operazioni per il rumore
  if ~series.codesN.isKey(id_noise)
