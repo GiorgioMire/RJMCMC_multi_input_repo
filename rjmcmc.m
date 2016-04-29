@@ -4,9 +4,9 @@
 % clc
 
 function rjmcmc(y,u)
-addpath('D:\Underwater\RJMCMC_multi_input\RJMCMC_functions')
+addpath('.\RJMCMC_functions')
 global mc SFP
-
+% 
 for j=1:length(u)
     units(j)=max(abs(u{j}));
  u{j}=u{j}./units(j);
@@ -16,8 +16,7 @@ end
   y=y./unitsy;
 
 
-close all
-clc
+
 Settings=Settings_by_GUI();
 clc
 
@@ -45,12 +44,13 @@ mc.lambdaB=2;
 mc.sigmaA=Settings.sigmaP;
 mc.sigmaB=Settings.sigmaN;
 mc.sigmaE=Settings.sigmaEP;
-mc.sigmaE=mc.sigmaE/unitsy;
+ mc.sigmaE=mc.sigmaE/unitsy;
 
 % Inizializzo gli insiemi dei termini disponibili 
 
 [Sets]=Inizializza_insiemi();
-computeScaleFactors;
+ computeScaleFactors;
+y
 mc.eestim=zeros(size(y));
 
 [Series]=Prepare_series();

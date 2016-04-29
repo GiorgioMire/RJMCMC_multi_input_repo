@@ -7,7 +7,7 @@
 % hold on
 % plot(-5/100*ones(size(cor)),'--r')
 % hold off
-figure(10+batch_idx)
+figure(10)
 subplot(3,4,1)
 % hist(Series.Bq{Series.ModeNoise(end)}.',100);
 hist(Series.sk,100);
